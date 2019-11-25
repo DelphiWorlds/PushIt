@@ -348,7 +348,6 @@ object MainView: TMainView
               Size.Height = 24.000000000000000000
               Size.PlatformDefault = False
               OnChangeTracking = MessageFieldChange
-              OnKeyDown = BadgeEditKeyDown
             end
           end
         end
