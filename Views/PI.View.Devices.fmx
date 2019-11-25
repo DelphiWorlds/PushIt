@@ -1,0 +1,68 @@
+object DevicesView: TDevicesView
+  Left = 0
+  Top = 0
+  Caption = 'Push Devices'
+  ClientHeight = 391
+  ClientWidth = 1200
+  Position = ScreenCenter
+  StyleBook = Resources.StyleBook
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object ListBox: TListBox
+    Align = Client
+    Size.Width = 1200.000000000000000000
+    Size.Height = 346.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnItemClick = ListBoxItemClick
+    Viewport.Width = 1196.000000000000000000
+    Viewport.Height = 342.000000000000000000
+  end
+  object BottomLayout: TLayout
+    Align = Bottom
+    Padding.Left = 4.000000000000000000
+    Padding.Top = 4.000000000000000000
+    Padding.Right = 4.000000000000000000
+    Padding.Bottom = 4.000000000000000000
+    Position.Y = 346.000000000000000000
+    Size.Width = 1200.000000000000000000
+    Size.Height = 45.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object CancelButton: TButton
+      Align = Right
+      ModalResult = 2
+      Position.X = 1087.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 109.000000000000000000
+      Size.Height = 37.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Cancel'
+    end
+    object UseButton: TButton
+      Align = Right
+      Enabled = False
+      Margins.Right = 8.000000000000000000
+      Position.X = 970.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 109.000000000000000000
+      Size.Height = 37.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Use'
+      OnClick = UseButtonClick
+    end
+  end
+  object DeviceTimer: TTimer
+    OnTimer = DeviceTimerTimer
+    Left = 520
+    Top = 354
+  end
+end

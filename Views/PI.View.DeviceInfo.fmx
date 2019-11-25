@@ -1,0 +1,78 @@
+object DeviceInfoView: TDeviceInfoView
+  HitTest = False
+  Padding.Left = 8.000000000000000000
+  Padding.Top = 8.000000000000000000
+  Padding.Right = 8.000000000000000000
+  Padding.Bottom = 8.000000000000000000
+  Size.Width = 677.000000000000000000
+  Size.Height = 114.000000000000000000
+  Size.PlatformDefault = False
+  object DetailsLayout: TLayout
+    Align = Client
+    Padding.Left = 4.000000000000000000
+    Padding.Top = 4.000000000000000000
+    Padding.Right = 4.000000000000000000
+    Padding.Bottom = 4.000000000000000000
+    Size.Width = 580.000000000000000000
+    Size.Height = 98.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object DeviceIDLabel: TLabel
+      Align = Top
+      Position.X = 4.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 572.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'DeviceID:'
+      TabOrder = 2
+    end
+    object DeviceIDEdit: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Top
+      TabOrder = 3
+      ReadOnly = True
+      Position.X = 4.000000000000000000
+      Position.Y = 23.000000000000000000
+      Margins.Top = 2.000000000000000000
+      Size.Width = 572.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      OnClick = ControlClickHandler
+    end
+    object TokenLabel: TLabel
+      Align = Top
+      Margins.Top = 2.000000000000000000
+      Position.X = 4.000000000000000000
+      Position.Y = 47.000000000000000000
+      Size.Width = 572.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Token:'
+      TabOrder = 0
+    end
+    object TokenEdit: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Top
+      TabOrder = 1
+      ReadOnly = True
+      Position.X = 4.000000000000000000
+      Position.Y = 66.000000000000000000
+      Margins.Top = 2.000000000000000000
+      Size.Width = 572.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      OnClick = ControlClickHandler
+    end
+  end
+  object OSImage: TGlyph
+    Align = Left
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 98.000000000000000000
+    Size.PlatformDefault = False
+    ImageIndex = 0
+    Images = Resources.ImageList
+  end
+end
