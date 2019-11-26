@@ -9,7 +9,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.StdCtrls, FMX.TabControl,
   FMX.Layouts, FMX.Edit, FMX.Objects, FMX.ComboEdit,
   // PushIt
-  PI.Types, PI.View.Devices;
+  PI.Types, PI.View.Devices, FMX.ListBox;
 
 type
   TMainView = class(TForm)
@@ -50,6 +50,9 @@ type
     ClickActionEdit: TEdit;
     APIKeyEdit: TComboEdit;
     DevicesButton: TButton;
+    PriorityLabel: TLabel;
+    PriorityComboBox: TComboBox;
+    ContentAvailableCheckBox: TCheckBox;
     procedure SendButtonClick(Sender: TObject);
     procedure JSONMemoChangeTracking(Sender: TObject);
     procedure MessageFieldChange(Sender: TObject);
@@ -164,6 +167,8 @@ begin
   TitleEdit.Text := '';
   SubtitleEdit.Text := '';
   BodyMemo.Text := '';
+  PriorityComboBox.ItemIndex := 0;
+  ContentAvailableCheckBox.IsChecked := False;
   SoundEdit.Text := '';
   BadgeEdit.Text := '';
   ClickActionEdit.Text := '';
@@ -241,6 +246,10 @@ begin
       LNotification.AddPair('subtitle', SubtitleEdit.Text);
     if not BodyMemo.Text.Trim.IsEmpty then
       LNotification.AddPair('body', BodyMemo.Text);
+    if PriorityComboBox.ItemIndex > 0 then
+      LNotification.AddPair('priority', PriorityComboBox.Items[PriorityComboBox.ItemIndex].ToLower);
+    if ContentAvailableCheckBox.IsChecked then
+      LNotification.AddPair('content_available', TJSONBool.Create(True));
     if not SoundEdit.Text.Trim.IsEmpty then
       LNotification.AddPair('sound', SoundEdit.Text);
     if not BadgeEdit.Text.Trim.IsEmpty then
