@@ -1,5 +1,6 @@
 {$IF Defined(MACOS)}
-  {$R 'Styles.macOS.res' 'Styles\Styles.macOS.rc'}
+  {$I Styles.macOS.inc}
 {$ELSE}
-  {$R 'Styles.Default.res' 'Styles\Styles.Default.rc'}
+  {$I Styles.Default.inc}
 {$ENDIF}
+

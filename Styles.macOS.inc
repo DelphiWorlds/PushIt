@@ -1,0 +1,1 @@
+{$R 'Styles.macOS.res' 'Styles\Styles.macOS.rc'}
