@@ -88,7 +88,7 @@ implementation
 
 uses
   // RTL
-  System.Json, System.Character, System.Net.HttpClient, REST.Types, REST.Json,
+  System.Json, System.Character, System.Net.HttpClient, System.Net.URLClient, System.NetConsts, REST.Types, REST.Json,
   // DW
   DW.Classes.Helpers, DW.REST.Json.Helpers,
   // PushIt
@@ -110,7 +110,10 @@ end;
 procedure TMainView.DevicesButtonClick(Sender: TObject);
 begin
   if FDevicesView.ShowModal = mrOk then
+  begin
     TokenEdit.Text := FDevicesView.SelectedDeviceInfo.Token;
+    ChannelIDEdit.Text := FDevicesView.SelectedDeviceInfo.ChannelId;
+  end;
 end;
 
 procedure TMainView.DevicesChangeHandler(Sender: TObject);

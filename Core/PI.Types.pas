@@ -6,6 +6,7 @@ type
   TAPIKeyMRU = TArray<string>;
 
   TDeviceInfo = record
+    ChannelId: string;
     DeviceID: string;
     Token: string;
     OS: string;

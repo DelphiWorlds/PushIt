@@ -46,6 +46,7 @@ begin
     LJSON.TryGetValue('deviceid', LDeviceInfo.DeviceID);
     LJSON.TryGetValue('token', LDeviceInfo.Token);
     LJSON.TryGetValue('os', LDeviceInfo.OS);
+    LJSON.TryGetValue('channelid', LDeviceInfo.ChannelId);
     FOnDeviceBroadcast(Self, LDeviceInfo);
   finally
     LJSON.Free;
