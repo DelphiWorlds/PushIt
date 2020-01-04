@@ -47,6 +47,11 @@ The screenshots (above) for PushIt use the Calypso style from [Delphi Styles](ht
 
 ## Version History
 
+v1.1.0 (January 4th, 2020)
+
+* Added support for data element, and for including both notification and data elements in the payload
+* Added support for retrieving the channel id from the UDP packet
+  
 v1.0.0 (November 25th, 2019)
 
 * Initial release
