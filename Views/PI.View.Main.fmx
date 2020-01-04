@@ -2,7 +2,7 @@ object MainView: TMainView
   Left = 0
   Top = 0
   Caption = 'PushIt'
-  ClientHeight = 702
+  ClientHeight = 726
   ClientWidth = 1237
   Position = ScreenCenter
   StyleBook = Resources.StyleBook
@@ -21,7 +21,7 @@ object MainView: TMainView
     Margins.Right = 4.000000000000000000
     Margins.Bottom = 4.000000000000000000
     Position.X = 4.000000000000000000
-    Position.Y = 576.000000000000000000
+    Position.Y = 600.000000000000000000
     Size.Width = 1229.000000000000000000
     Size.Height = 78.000000000000000000
     Size.PlatformDefault = False
@@ -34,7 +34,7 @@ object MainView: TMainView
     Margins.Left = 4.000000000000000000
     Margins.Right = 4.000000000000000000
     Position.X = 4.000000000000000000
-    Position.Y = 555.000000000000000000
+    Position.Y = 579.000000000000000000
     Size.Width = 1229.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -45,7 +45,7 @@ object MainView: TMainView
     Align = Client
     Margins.Top = 4.000000000000000000
     Size.Width = 1237.000000000000000000
-    Size.Height = 502.000000000000000000
+    Size.Height = 526.000000000000000000
     Size.PlatformDefault = False
     TabIndex = 0
     TabOrder = 4
@@ -53,9 +53,9 @@ object MainView: TMainView
     OnChange = TabControlChange
     Sizes = (
       1237s
-      476s
+      500s
       1237s
-      476s)
+      500s)
     object MessageTab: TTabItem
       CustomIcon = <
         item
@@ -76,7 +76,7 @@ object MainView: TMainView
         Margins.Right = 4.000000000000000000
         Margins.Bottom = 4.000000000000000000
         Size.Width = 1229.000000000000000000
-        Size.Height = 468.000000000000000000
+        Size.Height = 492.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         object TokenLabel: TLabel
@@ -140,7 +140,7 @@ object MainView: TMainView
           Padding.Top = 4.000000000000000000
           Padding.Right = 4.000000000000000000
           Padding.Bottom = 4.000000000000000000
-          Position.Y = 424.000000000000000000
+          Position.Y = 448.000000000000000000
           Size.Width = 1229.000000000000000000
           Size.Height = 44.000000000000000000
           Size.PlatformDefault = False
@@ -195,13 +195,13 @@ object MainView: TMainView
         object MessageFieldsLayout: TLayout
           Align = Client
           Size.Width = 1229.000000000000000000
-          Size.Height = 307.000000000000000000
+          Size.Height = 331.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 6
           object MessageTextLayout: TLayout
             Align = Client
             Size.Width = 813.000000000000000000
-            Size.Height = 307.000000000000000000
+            Size.Height = 331.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
             object BodyLabel: TLabel
@@ -221,11 +221,11 @@ object MainView: TMainView
               Align = Client
               Margins.Top = 4.000000000000000000
               Size.Width = 813.000000000000000000
-              Size.Height = 184.000000000000000000
+              Size.Height = 208.000000000000000000
               Size.PlatformDefault = False
               TabOrder = 2
               Viewport.Width = 809.000000000000000000
-              Viewport.Height = 180.000000000000000000
+              Viewport.Height = 204.000000000000000000
             end
             object SubtitleEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -277,13 +277,13 @@ object MainView: TMainView
             Padding.Bottom = 4.000000000000000000
             Position.X = 813.000000000000000000
             Size.Width = 416.000000000000000000
-            Size.Height = 307.000000000000000000
+            Size.Height = 331.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
             object BadgeEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Top
-              TabOrder = 1
+              TabOrder = 2
               Position.X = 8.000000000000000000
               Position.Y = 173.000000000000000000
               Margins.Top = 4.000000000000000000
@@ -302,7 +302,7 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Badge:'
-              TabOrder = 6
+              TabOrder = 8
             end
             object SoundLabel: TLabel
               Align = Top
@@ -313,7 +313,7 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Sound:'
-              TabOrder = 5
+              TabOrder = 7
             end
             object SoundEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -336,12 +336,12 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Click Action:'
-              TabOrder = 3
+              TabOrder = 5
             end
             object ClickActionEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Top
-              TabOrder = 2
+              TabOrder = 3
               Position.X = 8.000000000000000000
               Position.Y = 222.000000000000000000
               Margins.Top = 4.000000000000000000
@@ -359,7 +359,7 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Priority:'
-              TabOrder = 4
+              TabOrder = 6
             end
             object PriorityComboBox: TComboBox
               Align = Top
@@ -374,7 +374,7 @@ object MainView: TMainView
               Size.Width = 404.000000000000000000
               Size.Height = 22.000000000000000000
               Size.PlatformDefault = False
-              TabOrder = 7
+              TabOrder = 9
             end
             object ContentAvailableCheckBox: TCheckBox
               Align = Top
@@ -384,8 +384,67 @@ object MainView: TMainView
               Size.Width = 404.000000000000000000
               Size.Height = 19.000000000000000000
               Size.PlatformDefault = False
-              TabOrder = 8
+              TabOrder = 10
               Text = 'Content Available'
+            end
+            object MessageTypeLayout: TLayout
+              Align = Top
+              Margins.Top = 8.000000000000000000
+              Position.X = 8.000000000000000000
+              Position.Y = 275.000000000000000000
+              Size.Width = 404.000000000000000000
+              Size.Height = 43.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 1
+              object MessageTypeRadioLayout: TLayout
+                Align = VertCenter
+                Position.Y = 9.000000000000000000
+                Size.Width = 404.000000000000000000
+                Size.Height = 24.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                object MessageTypeNotificationRadioButton: TRadioButton
+                  Align = Left
+                  IsChecked = True
+                  Size.Width = 120.000000000000000000
+                  Size.Height = 24.000000000000000000
+                  Size.PlatformDefault = False
+                  TabOrder = 2
+                  Text = 'Notification'
+                  OnClick = MessageTypeRadioButtonClick
+                end
+                object MessageTypeDataRadioButton: TRadioButton
+                  Align = Left
+                  Position.X = 120.000000000000000000
+                  Size.Width = 120.000000000000000000
+                  Size.Height = 24.000000000000000000
+                  Size.PlatformDefault = False
+                  TabOrder = 1
+                  Text = 'Data'
+                  OnClick = MessageTypeRadioButtonClick
+                end
+                object MessageTypeBothRadioButton: TRadioButton
+                  Align = Left
+                  Position.X = 240.000000000000000000
+                  Size.Width = 120.000000000000000000
+                  Size.Height = 24.000000000000000000
+                  Size.PlatformDefault = False
+                  TabOrder = 0
+                  Text = 'Both'
+                  OnClick = MessageTypeRadioButtonClick
+                end
+              end
+            end
+            object MessageTypeLabel: TLabel
+              Align = Top
+              Margins.Top = 4.000000000000000000
+              Position.X = 8.000000000000000000
+              Position.Y = 250.000000000000000000
+              Size.Width = 404.000000000000000000
+              Size.Height = 17.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Payload Type:'
+              TabOrder = 4
             end
           end
         end
@@ -416,11 +475,11 @@ object MainView: TMainView
         Margins.Right = 4.000000000000000000
         Margins.Bottom = 4.000000000000000000
         Size.Width = 1229.000000000000000000
-        Size.Height = 468.000000000000000000
+        Size.Height = 492.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
         Viewport.Width = 1225.000000000000000000
-        Viewport.Height = 464.000000000000000000
+        Viewport.Height = 488.000000000000000000
       end
     end
   end
@@ -430,7 +489,7 @@ object MainView: TMainView
     Padding.Top = 4.000000000000000000
     Padding.Right = 4.000000000000000000
     Padding.Bottom = 4.000000000000000000
-    Position.Y = 658.000000000000000000
+    Position.Y = 682.000000000000000000
     Size.Width = 1237.000000000000000000
     Size.Height = 44.000000000000000000
     Size.PlatformDefault = False

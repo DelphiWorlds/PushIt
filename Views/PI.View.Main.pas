@@ -53,6 +53,12 @@ type
     PriorityLabel: TLabel;
     PriorityComboBox: TComboBox;
     ContentAvailableCheckBox: TCheckBox;
+    MessageTypeLayout: TLayout;
+    MessageTypeRadioLayout: TLayout;
+    MessageTypeNotificationRadioButton: TRadioButton;
+    MessageTypeDataRadioButton: TRadioButton;
+    MessageTypeBothRadioButton: TRadioButton;
+    MessageTypeLabel: TLabel;
     procedure SendButtonClick(Sender: TObject);
     procedure JSONMemoChangeTracking(Sender: TObject);
     procedure MessageFieldChange(Sender: TObject);
@@ -64,6 +70,7 @@ type
     procedure APIKeyEditClosePopup(Sender: TObject);
     procedure APIKeyEditPopup(Sender: TObject);
     procedure DevicesButtonClick(Sender: TObject);
+    procedure MessageTypeRadioButtonClick(Sender: TObject);
   private
     FAPIKey: string;
     FDevicesView: TDevicesView;
@@ -229,6 +236,11 @@ begin
   FIsMessageModified := True;
 end;
 
+procedure TMainView.MessageTypeRadioButtonClick(Sender: TObject);
+begin
+  FIsMessageModified := True;
+end;
+
 procedure TMainView.ResponseReceived(const AResponse: string);
 begin
   ResponseMemo.Text := AResponse;
@@ -259,7 +271,15 @@ begin
       LNotification.AddPair('badge', BadgeEdit.Text);
     if not ClickActionEdit.Text.Trim.IsEmpty then
       LNotification.AddPair('click_action', ClickActionEdit.Text);
-    LJSON.AddPair('notification', LNotification);
+    if MessageTypeNotificationRadioButton.IsChecked then
+      LJSON.AddPair('notification', LNotification)
+    else if MessageTypeDataRadioButton.IsChecked then
+      LJSON.AddPair('data', LNotification)
+    else if MessageTypeBothRadioButton.IsChecked then
+    begin
+      LJSON.AddPair('notification', LNotification);
+      LJSON.AddPair('data', TJSONObject(LNotification.Clone));
+    end;
     Result := LJSON.ToJSON;
   finally
     LJSON.Free;
