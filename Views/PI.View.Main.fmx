@@ -212,7 +212,7 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Body:'
-              TabOrder = 3
+              TabOrder = 4
             end
             object BodyMemo: TMemo
               Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -221,16 +221,16 @@ object MainView: TMainView
               Align = Client
               Margins.Top = 4.000000000000000000
               Size.Width = 813.000000000000000000
-              Size.Height = 208.000000000000000000
+              Size.Height = 159.000000000000000000
               Size.PlatformDefault = False
-              TabOrder = 2
+              TabOrder = 3
               Viewport.Width = 809.000000000000000000
-              Viewport.Height = 204.000000000000000000
+              Viewport.Height = 155.000000000000000000
             end
             object SubtitleEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Top
-              TabOrder = 1
+              TabOrder = 2
               Position.Y = 74.000000000000000000
               Margins.Top = 4.000000000000000000
               Size.Width = 813.000000000000000000
@@ -246,12 +246,12 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Subtitle:'
-              TabOrder = 4
+              TabOrder = 5
             end
             object TitleEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Top
-              TabOrder = 0
+              TabOrder = 1
               Position.Y = 25.000000000000000000
               Margins.Top = 4.000000000000000000
               Size.Width = 813.000000000000000000
@@ -267,7 +267,28 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Title:'
-              TabOrder = 5
+              TabOrder = 7
+            end
+            object ImageURLLabel: TLabel
+              Align = Bottom
+              Margins.Top = 4.000000000000000000
+              Position.Y = 286.000000000000000000
+              Size.Width = 813.000000000000000000
+              Size.Height = 17.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Image URL:'
+              TabOrder = 6
+            end
+            object ImageURLEdit: TEdit
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Bottom
+              TabOrder = 0
+              Position.Y = 307.000000000000000000
+              Margins.Top = 4.000000000000000000
+              Size.Width = 813.000000000000000000
+              Size.Height = 24.000000000000000000
+              Size.PlatformDefault = False
+              OnChangeTracking = MessageFieldChange
             end
           end
           object MessagePropsLayout: TLayout
@@ -375,6 +396,7 @@ object MainView: TMainView
               Size.Height = 22.000000000000000000
               Size.PlatformDefault = False
               TabOrder = 9
+              OnChange = PriorityComboBoxChange
             end
             object ContentAvailableCheckBox: TCheckBox
               Align = Top
@@ -386,6 +408,7 @@ object MainView: TMainView
               Size.PlatformDefault = False
               TabOrder = 10
               Text = 'Content Available'
+              OnClick = ContentAvailableCheckBoxClick
             end
             object MessageTypeLayout: TLayout
               Align = Top
