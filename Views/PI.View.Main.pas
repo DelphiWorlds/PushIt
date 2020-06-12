@@ -7,9 +7,9 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   // FMX
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.StdCtrls, FMX.TabControl,
-  FMX.Layouts, FMX.Edit, FMX.Objects, FMX.ComboEdit,
+  FMX.Layouts, FMX.Edit, FMX.Objects, FMX.ComboEdit, FMX.ListBox, FMX.Memo.Types,
   // PushIt
-  PI.Types, PI.View.Devices, FMX.ListBox;
+  PI.Types, PI.View.Devices;
 
 type
   TMainView = class(TForm)
@@ -59,6 +59,8 @@ type
     MessageTypeDataRadioButton: TRadioButton;
     MessageTypeBothRadioButton: TRadioButton;
     MessageTypeLabel: TLabel;
+    ImageURLLabel: TLabel;
+    ImageURLEdit: TEdit;
     procedure SendButtonClick(Sender: TObject);
     procedure JSONMemoChangeTracking(Sender: TObject);
     procedure MessageFieldChange(Sender: TObject);
@@ -71,6 +73,8 @@ type
     procedure APIKeyEditPopup(Sender: TObject);
     procedure DevicesButtonClick(Sender: TObject);
     procedure MessageTypeRadioButtonClick(Sender: TObject);
+    procedure ContentAvailableCheckBoxClick(Sender: TObject);
+    procedure PriorityComboBoxChange(Sender: TObject);
   private
     FAPIKey: string;
     FDevicesView: TDevicesView;
@@ -241,6 +245,16 @@ begin
   FIsMessageModified := True;
 end;
 
+procedure TMainView.PriorityComboBoxChange(Sender: TObject);
+begin
+  FIsMessageModified := True;
+end;
+
+procedure TMainView.ContentAvailableCheckBoxClick(Sender: TObject);
+begin
+  FIsMessageModified := True;
+end;
+
 procedure TMainView.ResponseReceived(const AResponse: string);
 begin
   ResponseMemo.Text := AResponse;
@@ -253,6 +267,8 @@ begin
   LJSON := TJSONObject.Create;
   try
     LJSON.AddPair('to', TokenEdit.Text);
+    if ContentAvailableCheckBox.IsChecked then
+      LJSON.AddPair('content_available', TJSONBool.Create(True));
     LNotification := TJSONObject.Create;
     if not ChannelIDEdit.Text.Trim.IsEmpty then
       LNotification.AddPair('android_channel_id', ChannelIDEdit.Text);
@@ -263,14 +279,18 @@ begin
       LNotification.AddPair('body', BodyMemo.Text);
     if PriorityComboBox.ItemIndex > 0 then
       LNotification.AddPair('priority', PriorityComboBox.Items[PriorityComboBox.ItemIndex].ToLower);
-    if ContentAvailableCheckBox.IsChecked then
-      LNotification.AddPair('content_available', TJSONBool.Create(True));
     if not SoundEdit.Text.Trim.IsEmpty then
       LNotification.AddPair('sound', SoundEdit.Text);
     if not BadgeEdit.Text.Trim.IsEmpty then
       LNotification.AddPair('badge', BadgeEdit.Text);
     if not ClickActionEdit.Text.Trim.IsEmpty then
       LNotification.AddPair('click_action', ClickActionEdit.Text);
+    if not ImageURLEdit.Text.Trim.IsEmpty then
+    begin
+      LNotification.AddPair('image', ImageURLEdit.Text);
+      //  Required for iOS
+      LNotification.AddPair('mutable_content', TJSONBool.Create(True));
+    end;
     if MessageTypeNotificationRadioButton.IsChecked then
       LJSON.AddPair('notification', LNotification)
     else if MessageTypeDataRadioButton.IsChecked then
