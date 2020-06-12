@@ -139,6 +139,8 @@ var
   I: Integer;
   LItem: TDeviceInfoItem;
 begin
+  if csDestroying in ComponentState then
+    Exit; // <======
   ListBox.Clear;
   for I := 0 to FDeviceInfos.Count - 1 do
   begin
