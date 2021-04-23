@@ -20,7 +20,7 @@
 # Deployment Manager configuration file for your project. Added in Delphi XE2.
 # Uncomment this if it is not mobile development and you do not use remote debug feature.
 #*.deployproj
-# 
+#
 # C++ object files produced when C/C++ Output file generation is configured.
 # Uncomment this if you are not using external objects (zlib library for example).
 #*.obj
@@ -64,3 +64,32 @@ __recovery/
 
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
+
+# Boss dependency manager vendor folder https://github.com/HashLoad/boss
+modules/
+*.deployproj
+!Tools/*.exe
+AndroidManifest.template.xml
+Entitlement.TemplateOSX.xml
+Entitlement.TemplateiOS.xml
+info.plist.TemplateOSX.xml
+info.plist.TemplateIOS.xml
+*.res
+.DS_Store
+Unused
+LaunchScreen.TemplateiOS
+Settings.bundle
+**/Android/Debug
+**/Android/Release
+**/iOSDevice64/Debug/
+**/iOSDevice64/Release/
+**/OSX64/Debug/
+**/OSX64/Release/
+**/Win32/Debug/
+**/Win32/Release/
+**/Win64/Debug/
+**/Win64/Release/
+ThirdParty/Firebase/iOS/Firebase.6.*
+**/Service/*.java
+**/Service/JavaClasses
+dbgout.log
