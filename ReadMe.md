@@ -103,7 +103,7 @@ The screenshots (above) for PushIt use the Calypso style from [Delphi Styles](ht
 
 ## Version History
 
-v2.0.0 (April 25th, 2021)
+v2.0.0 (April 23rd, 2021)
 
 * Added support for HTTP v1 API
 * Last used token is now saved
