@@ -10,16 +10,21 @@ type
   TPushItConfig = class(TObject)
   private
     class var FCurrent: TPushItConfig;
+    class destructor DestroyClass;
     class function GetCurrent: TPushItConfig; static;
     class function GetFileName: string;
   private
     FAPIKeyMRU: TAPIKeyMRU;
+    FServiceAccountFileName: string;
+    FToken: string;
   public
-    class procedure UpdateAPIKeyMRU(const AMRU: TArray<string>);
     class property Current: TPushItConfig read GetCurrent;
   public
     procedure Save;
+    procedure UpdateAPIKeyMRU(const AMRU: TArray<string>);
     property APIKeyMRU: TAPIKeyMRU read FAPIKeyMRU write FAPIKeyMRU;
+    property ServiceAccountFileName: string read FServiceAccountFileName write FServiceAccountFileName;
+    property Token: string read FToken write FToken;
   end;
 
 implementation
@@ -31,6 +36,11 @@ uses
   REST.Json;
 
 { TPushItConfig }
+
+class destructor TPushItConfig.DestroyClass;
+begin
+  FCurrent.Free;
+end;
 
 class function TPushItConfig.GetCurrent: TPushItConfig;
 begin
@@ -54,7 +64,7 @@ begin
   TFile.WriteAllText(GetFileName, TJson.ObjectToJsonString(Self));
 end;
 
-class procedure TPushItConfig.UpdateAPIKeyMRU(const AMRU: TArray<string>);
+procedure TPushItConfig.UpdateAPIKeyMRU(const AMRU: TArray<string>);
 begin
   ForceDirectories(TPath.GetDirectoryName(GetFileName));
   Current.APIKeyMRU := AMRU;
