@@ -57,6 +57,7 @@ end;
 class function TPushItConfig.GetFileName: string;
 begin
   Result := TPath.Combine(TPath.GetDocumentsPath, 'PushIt\Config.json');
+  ForceDirectories(TPath.GetDirectoryName(Result));
 end;
 
 procedure TPushItConfig.Save;
@@ -66,7 +67,6 @@ end;
 
 procedure TPushItConfig.UpdateAPIKeyMRU(const AMRU: TArray<string>);
 begin
-  ForceDirectories(TPath.GetDirectoryName(GetFileName));
   Current.APIKeyMRU := AMRU;
   Current.Save;
 end;
