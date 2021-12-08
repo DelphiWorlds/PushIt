@@ -12,9 +12,7 @@ uses
   PI.Network in 'Core\PI.Network.pas' {Network: TDataModule},
   PI.Types in 'Core\PI.Types.pas',
   PI.View.Devices in 'Views\PI.View.Devices.pas' {DevicesView},
-  PI.View.DeviceInfo in 'Views\PI.View.DeviceInfo.pas' {DeviceInfoView: TFrame},
-  PI.JWT in 'Core\PI.JWT.pas',
-  PI.OAuth2 in 'Core\PI.OAuth2.pas';
+  PI.View.DeviceInfo in 'Views\PI.View.DeviceInfo.pas' {DeviceInfoView: TFrame};
 
 {$R *.res}
 
