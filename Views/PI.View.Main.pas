@@ -8,21 +8,12 @@ uses
   // FMX
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.StdCtrls, FMX.TabControl,
   FMX.Layouts, FMX.Edit, FMX.Objects, FMX.ComboEdit, FMX.ListBox, FMX.Memo.Types, FMX.ActnList,
+  // DW
+  DW.FCMSender,
   // PushIt
-  PI.Types, PI.View.Devices, PI.Config, PI.OAuth2;
+  PI.Types, PI.View.Devices, PI.Config;
 
 type
-  TServiceAccount = record
-    AuthURI: string;
-    ClientEmail: string;
-    ClientID: string;
-    IsValid: Boolean;
-    PrivateKey: string;
-    ProjectID: string;
-    TokenURI: string;
-    function ParseJSON(const AJSON: string): Boolean;
-  end;
-
   TMainView = class(TForm)
     ResponseMemo: TMemo;
     ResponseLabel: TLabel;
@@ -31,9 +22,7 @@ type
     JSONMemo: TMemo;
     BottomLayout: TLayout;
     SendButton: TButton;
-    APIKeyLabel: TLabel;
     MessageTab: TTabItem;
-    TokenLabel: TLabel;
     MessageLayout: TLayout;
     TitleEdit: TEdit;
     BodyLabel: TLabel;
@@ -59,24 +48,14 @@ type
     SoundEdit: TEdit;
     ClickActionLabel: TLabel;
     ClickActionEdit: TEdit;
-    APIKeyEdit: TComboEdit;
     DevicesButton: TButton;
     PriorityLabel: TLabel;
     PriorityComboBox: TComboBox;
     ContentAvailableCheckBox: TCheckBox;
-    MessageTypeLayout: TLayout;
-    MessageTypeRadioLayout: TLayout;
-    MessageTypeNotificationRadioButton: TRadioButton;
-    MessageTypeDataRadioButton: TRadioButton;
-    MessageTypeBothRadioButton: TRadioButton;
-    MessageTypeLabel: TLabel;
     ImageURLLabel: TLabel;
     ImageURLEdit: TEdit;
     BigPictureCheckBox: TCheckBox;
     BigTextCheckBox: TCheckBox;
-    APILayout: TLayout;
-    LegacyHTTPAPIRadioButton: TRadioButton;
-    HTTPv1APIRadioButton: TRadioButton;
     ActionList: TActionList;
     SendAction: TAction;
     SelectServiceAccountJSONFileAction: TAction;
@@ -84,7 +63,11 @@ type
     ServiceAccountJSONLabel: TLabel;
     ServiceAccountJSONFileNameEdit: TEdit;
     ServiceAccountJSONFileButton: TEllipsesEditButton;
-    APIInfoLayout: TLayout;
+    LogCheckBox: TCheckBox;
+    TokenTopicLayout: TLayout;
+    TokenRadioButton: TRadioButton;
+    TopicRadioButton: TRadioButton;
+    ServiceAccountLayout: TLayout;
     procedure JSONMemoChangeTracking(Sender: TObject);
     procedure MessageFieldChange(Sender: TObject);
     procedure ClearMessageFieldsButtonClick(Sender: TObject);
@@ -92,8 +75,6 @@ type
     procedure TabControlChange(Sender: TObject);
     procedure BadgeEditKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     procedure BadgeEditChangeTracking(Sender: TObject);
-    procedure APIKeyEditClosePopup(Sender: TObject);
-    procedure APIKeyEditPopup(Sender: TObject);
     procedure DevicesButtonClick(Sender: TObject);
     procedure MessageTypeRadioButtonClick(Sender: TObject);
     procedure ContentAvailableCheckBoxClick(Sender: TObject);
@@ -102,35 +83,24 @@ type
     procedure ServiceAccountJSONFileNameEditChangeTracking(Sender: TObject);
     procedure SendActionExecute(Sender: TObject);
     procedure SendActionUpdate(Sender: TObject);
-    procedure LegacyHTTPAPIRadioButtonChange(Sender: TObject);
   private
-    FAPIKey: string;
     FConfig: TPushItConfig;
     FDevicesView: TDevicesView;
+    FFCMSender: TFCMSender;
     FIsJSONModified: Boolean;
     FIsMessageModified: Boolean;
     FJSONDumpFolder: string;
-    FOAuth2: TPushItOAuth2;
-    FServiceAccount: TServiceAccount;
-    function CanSendLegacy: Boolean;
-    function CanSendNonLegacy: Boolean;
+    function CanSend: Boolean;
     procedure ConfirmUpdateJSON;
     procedure DevicesChangeHandler(Sender: TObject);
     procedure DumpJSON(const AJSON: string);
-    procedure FCMPost(const ARequest: TStream);
     procedure FCMSend;
-    function GetAndroidJSONValue: TJSONValue;
-    function GetAndroidNotificationJSONValue: TJSONValue;
-    function GetAPNSJSONValue: TJSONValue;
-    function GetDataJSONValue: TJSONValue;
-    function GetMessageJSONLegacy: string;
-    function GetMessageJSONNonLegacy: string;
+    procedure FCMSenderErrorHandler(Sender: TObject; const AError: TFCMSenderError);
+    procedure FCMSenderResponseHandler(Sender: TObject; const AResponse: TFCMSenderResponse);
+    function GetMessageJSON: string;
     function HasMinRequiredFields: Boolean;
-    procedure OAuth2AuthenticateCompleteHandler(const ASuccess: Boolean; const AMsg: string);
     procedure ParseServiceAccount;
     procedure ResponseReceived(const AResponse: string);
-    function UseLegacyAPI: Boolean;
-    procedure UseLegacyAPIChanged;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -146,45 +116,13 @@ implementation
 uses
   // RTL
   System.Character, System.Net.HttpClient, System.Net.URLClient, System.NetConsts, System.IOUtils,
-  REST.Types, REST.Json,
+  REST.Types,
   // FMX
   FMX.DialogService,
   // DW
-  DW.Classes.Helpers, DW.REST.Json.Helpers,
+  DW.Classes.Helpers, DW.JSON,
   // PushIt
   PI.Consts, PI.Resources;
-
-{ TServiceAccount }
-
-function TServiceAccount.ParseJSON(const AJSON: string): Boolean;
-var
-  LJSONValue: TJSONValue;
-begin
-  Result := False;
-  IsValid := False;
-  ClientID := '';
-  ClientEmail := '';
-  ProjectID := '';
-  PrivateKey := '';
-  AuthURI := '';
-  TokenURI := '';
-  if not AJSON.IsEmpty then
-  begin
-    LJSONValue := TJsonObject.ParseJSONValue(AJSON);
-    if LJSONValue <> nil then
-    try
-      IsValid := LJSONValue.TryGetValue('client_id', ClientID)
-        and LJSONValue.TryGetValue('client_email', ClientEmail)
-        and LJSONValue.TryGetValue('private_key', PrivateKey)
-        and LJSONValue.TryGetValue('project_id', ProjectID)
-        and LJSONValue.TryGetValue('auth_uri', AuthURI)
-        and LJSONValue.TryGetValue('token_uri', TokenURI);
-      Result := IsValid;
-    finally
-      LJSONValue.Free;
-    end;
-  end;
-end;
 
 { TMainView }
 
@@ -194,22 +132,20 @@ begin
   FJSONDumpFolder := TPath.Combine(TPath.GetTempPath, 'PushIt');
   ForceDirectories(FJSONDumpFolder);
   TabControl.ActiveTab := MessageTab;
-  FOAuth2 := TPushItOAuth2.Create;
+  FFCMSender := TFCMSender.Create;
+  FFCMSender.OnError := FCMSenderErrorHandler;
+  FFCMSender.OnResponse := FCMSenderResponseHandler;
   FDevicesView := TDevicesView.Create(Application);
   FDevicesView.OnDevicesChange := DevicesChangeHandler;
   FDevicesView.IsMonitoring := True;
   FConfig := TPushItConfig.Current;
   ServiceAccountJSONFileNameEdit.Text := FConfig.ServiceAccountFileName;
-  APIKeyEdit.Items.AddStrings(TPushItConfig.Current.APIKeyMRU);
-  if APIKeyEdit.Items.Count > 0 then
-    APIKeyEdit.ItemIndex := 0;
   TokenEdit.Text := FConfig.Token;
-  UseLegacyAPIChanged;
 end;
 
 destructor TMainView.Destroy;
 begin
-  FOAuth2.Free;
+  FFCMSender.Free;
   inherited;
 end;
 
@@ -232,26 +168,7 @@ var
   LFileName: string;
 begin
   LFileName := TPath.Combine(FJSONDumpFolder, Format('Message-%s.json', [FormatDateTime('yyyy-mm-dd-hh-nn-ss-zzz', Now)]));
-  TFile.WriteAllText(LFileName, TJson.Tidy(AJSON));
-end;
-
-procedure TMainView.APIKeyEditClosePopup(Sender: TObject);
-var
-  LKey: string;
-begin
-  if (APIKeyEdit.ItemIndex > -1) and (APIKeyEdit.Tag <> APIKeyEdit.ItemIndex) then
-  begin
-    LKey := APIKeyEdit.Items[APIKeyEdit.ItemIndex];
-    APIKeyEdit.Items.Delete(APIKeyEdit.ItemIndex);
-    APIKeyEdit.Items.Insert(0, LKey);
-    APIKeyEdit.ItemIndex := APIKeyEdit.Items.IndexOf(LKey);
-    FConfig.UpdateAPIKeyMRU(APIKeyEdit.Items.ToStringArray);
-  end;
-end;
-
-procedure TMainView.APIKeyEditPopup(Sender: TObject);
-begin
-  APIKeyEdit.Tag := APIKeyEdit.Items.IndexOf(APIKeyEdit.Text);
+  TFile.WriteAllText(LFileName, TJsonHelper.Tidy(AJSON));
 end;
 
 procedure TMainView.BadgeEditChangeTracking(Sender: TObject);
@@ -271,16 +188,10 @@ begin
   end;
 end;
 
-function TMainView.CanSendLegacy: Boolean;
-begin
-  // Needs Server Key, Token...
-  Result := not APIKeyEdit.Text.Trim.IsEmpty and not TokenEdit.Text.Trim.IsEmpty;
-end;
-
-function TMainView.CanSendNonLegacy: Boolean;
+function TMainView.CanSend: Boolean;
 begin
   // Needs token plus OAuth2 stuff...
-  Result := not TokenEdit.Text.Trim.IsEmpty and FServiceAccount.IsValid;
+  Result := not TokenEdit.Text.Trim.IsEmpty and FFCMSender.ServiceAccount.IsValid and HasMinRequiredFields;
 end;
 
 function TMainView.HasMinRequiredFields: Boolean;
@@ -313,91 +224,41 @@ begin
   ParseServiceAccount;
 end;
 
-procedure TMainView.FCMPost(const ARequest: TStream);
-var
-  LHTTP: THTTPClient;
-  LResponse: IHTTPResponse;
-  LContent, LURL: string;
-begin
-  LHTTP := THTTPClient.Create;
-  try
-    LHTTP.Accept := CONTENTTYPE_APPLICATION_JSON;
-    LHTTP.ContentType := CONTENTTYPE_APPLICATION_JSON;
-    if UseLegacyAPI then
-    begin
-      LURL := cFCMLegacyHTTPSendURL;
-      LHTTP.CustomHeaders['Authorization'] := 'key=' + FAPIKey;
-    end
-    else
-    begin
-      LURL := Format(cFCMHTTPv1SendURL, [FServiceAccount.ProjectID]);
-      LHTTP.CustomHeaders['Authorization'] := 'Bearer ' + FOAuth2.AccessToken;
-    end;
-    LResponse := LHTTP.Post(LURL, ARequest);
-    LContent := LResponse.ContentAsString;
-    TDo.SyncMain(
-      procedure
-      begin
-        ResponseReceived(LContent);
-      end
-    );
-  finally
-    LHTTP.Free;
-  end;
-end;
-
-procedure TMainView.OAuth2AuthenticateCompleteHandler(const ASuccess: Boolean; const AMsg: string);
-begin
-  if ASuccess then
-    FCMSend
-  else
-    ResponseMemo.Text := AMsg;
-end;
-
 procedure TMainView.FCMSend;
 var
   LJSON: string;
 begin
-  if UseLegacyAPI or not FOAuth2.NeedsAuthentication then
-  begin
-    if UseLegacyAPI then
-      FAPIKey := APIKeyEdit.Text;
-    if TabControl.ActiveTab = MessageTab then
+  if TabControl.ActiveTab = MessageTab then
+    LJSON := GetMessageJSON
+  else
+    LJSON := JSONMemo.Text;
+  DumpJSON(LJSON);
+  if LogCheckBox.IsChecked then
+    ResponseMemo.Lines.Add('Sending..');
+  TDo.Run(
+    procedure
     begin
-      if UseLegacyAPI then
-        LJSON := GetMessageJSONLegacy
-      else
-        LJSON := GetMessageJSONNonLegacy;
+      FFCMSender.Post(LJSON);
     end
-    else
-      LJSON := JSONMemo.Text;
-    DumpJSON(LJSON);
-    TDo.Run(
-      procedure
-      var
-        LRequest: TStream;
-      begin
-        LRequest := TStringStream.Create(LJSON);
-        try
-          FCMPost(LRequest);
-        finally
-          LRequest.Free;
-        end;
-      end
-    );
-  end
-  else if not UseLegacyAPI and FOAuth2.NeedsAuthentication then
-    FOAuth2.Authenticate(OAuth2AuthenticateCompleteHandler);
+  );
+end;
+
+procedure TMainView.FCMSenderErrorHandler(Sender: TObject; const AError: TFCMSenderError);
+var
+  LResponse: string;
+begin
+  LResponse := Format('Error - %s: %s - %s', [AError.Kind.ToString, AError.ErrorMessage, AError.Content]);
+  TThread.Queue(nil, procedure begin ResponseReceived(LResponse) end);
+end;
+
+procedure TMainView.FCMSenderResponseHandler(Sender: TObject; const AResponse: TFCMSenderResponse);
+begin
+  TThread.Queue(nil, procedure begin ResponseReceived(AResponse.Response) end);
 end;
 
 procedure TMainView.JSONMemoChangeTracking(Sender: TObject);
 begin
   FIsJSONModified := True;
-end;
-
-procedure TMainView.LegacyHTTPAPIRadioButtonChange(Sender: TObject);
-begin
-  UseLegacyAPIChanged;
 end;
 
 procedure TMainView.MessageFieldChange(Sender: TObject);
@@ -411,24 +272,12 @@ begin
 end;
 
 procedure TMainView.ParseServiceAccount;
-var
-  LJSON: string;
 begin
-  FOAuth2.Clear;
-  LJSON := '';
-  if TFile.Exists(ServiceAccountJSONFileNameEdit.Text) then
-    LJSON := TFile.ReadAllText(ServiceAccountJSONFileNameEdit.Text);
-  if FServiceAccount.ParseJSON(LJSON) then
+  if FFCMSender.LoadServiceAccount(ServiceAccountJSONFileNameEdit.Text) then
   begin
-    FOAuth2.AuthURI := FServiceAccount.AuthURI;
-    FOAuth2.TokenURI := FServiceAccount.TokenURI;
-    FOAuth2.PrivateKey := FServiceAccount.PrivateKey;
-    FOAuth2.ClientID := FServiceAccount.ClientID;
-    FOAuth2.ClientEmail := FServiceAccount.ClientEmail;
     FConfig.ServiceAccountFileName := ServiceAccountJSONFileNameEdit.Text;
     FConfig.Save;
   end;
-  UseLegacyAPIChanged;
 end;
 
 procedure TMainView.PriorityComboBoxChange(Sender: TObject);
@@ -446,170 +295,39 @@ begin
   ResponseMemo.Text := AResponse;
 end;
 
-function TMainView.GetMessageJSONLegacy: string;
+function TMainView.GetMessageJSON: string;
 var
-  LJSON, LNotification: TJSONObject;
+  LMessage: TFCMMessage;
 begin
-  LJSON := TJSONObject.Create;
+  LMessage := TFCMMessage.Create;
   try
-    LJSON.AddPair('to', TokenEdit.Text);
-    if ContentAvailableCheckBox.IsChecked then
-      LJSON.AddPair('content_available', TJSONBool.Create(True));
-    LNotification := TJSONObject.Create;
-    if not ChannelIDEdit.Text.Trim.IsEmpty then
-      LNotification.AddPair('android_channel_id', ChannelIDEdit.Text);
-    LNotification.AddPair('title', TitleEdit.Text);
-    if not SubtitleEdit.Text.Trim.IsEmpty then
-      LNotification.AddPair('subtitle', SubtitleEdit.Text);
-    if not BodyMemo.Text.Trim.IsEmpty then
-      LNotification.AddPair('body', BodyMemo.Text);
+    LMessage.Title := TitleEdit.Text;
+    // LMessage.Subtitle := SubtitleEdit.Text;
+    LMessage.Body := BodyMemo.Text;
+    LMessage.ImageURL := ImageURLEdit.Text;
     if BigTextCheckBox.IsChecked then
-      LNotification.AddPair('big_text', TJSONNumber.Create(1));
-    if PriorityComboBox.ItemIndex > 0 then
-      LNotification.AddPair('priority', PriorityComboBox.Items[PriorityComboBox.ItemIndex].ToLower);
-    if not SoundEdit.Text.Trim.IsEmpty then
-      LNotification.AddPair('sound', SoundEdit.Text);
-    if not BadgeEdit.Text.Trim.IsEmpty then
-      LNotification.AddPair('badge', BadgeEdit.Text);
-    if not ClickActionEdit.Text.Trim.IsEmpty then
-      LNotification.AddPair('click_action', ClickActionEdit.Text);
-    if not ImageURLEdit.Text.Trim.IsEmpty then
-    begin
-      LNotification.AddPair('image', ImageURLEdit.Text);
-      if BigPictureCheckBox.IsChecked then
-        LNotification.AddPair('big_image', TJSONNumber.Create(1));
-      //  Required for iOS
-      LNotification.AddPair('mutable_content', TJSONBool.Create(True));
-    end;
-    if MessageTypeNotificationRadioButton.IsChecked then
-      LJSON.AddPair('notification', LNotification)
-    else if MessageTypeDataRadioButton.IsChecked then
-      LJSON.AddPair('data', LNotification)
-    else if MessageTypeBothRadioButton.IsChecked then
-    begin
-      LJSON.AddPair('notification', LNotification);
-      LJSON.AddPair('data', TJSONObject(LNotification.Clone));
-    end;
-    Result := LJSON.ToJSON;
-  finally
-    LJSON.Free;
-  end;
-end;
-
-function TMainView.GetAndroidNotificationJSONValue: TJSONValue;
-var
-  LNotification: TJSONObject;
-begin
-  Result := nil;
-  LNotification := TJSONObject.Create;
-  if not ClickActionEdit.Text.Trim.IsEmpty then
-    LNotification.AddPair('click_action', ClickActionEdit.Text);
-  if not ChannelIDEdit.Text.Trim.IsEmpty then
-    LNotification.AddPair('channel_id', ChannelIDEdit.Text);
-  if not ImageURLEdit.Text.Trim.IsEmpty then
-    LNotification.AddPair('image', ImageURLEdit.Text);
-  if not SoundEdit.Text.Trim.IsEmpty then
-    LNotification.AddPair('sound', SoundEdit.Text);
-  Result := LNotification;
-end;
-
-function TMainView.GetDataJSONValue: TJSONValue;
-var
-  LData: TJSONObject;
-  LHasData: Boolean;
-begin
-  Result := nil;
-  LHasData := False;
-  LData := TJSONObject.Create;
-  try
-    LData.AddPair('something', 'bloop');
-    LHasData := LData.Count > 0;
-  finally
-    if LHasData then
-      Result := LData
-    else
-      LData.Free;
-  end;
-end;
-
-function TMainView.GetAndroidJSONValue: TJSONValue;
-var
-  LAndroid: TJSONObject;
-  LData, LNotification: TJSONValue;
-begin
-  LAndroid := TJSONObject.Create;
-  if PriorityComboBox.ItemIndex > 0 then
-    LAndroid.AddPair('priority', PriorityComboBox.Items[PriorityComboBox.ItemIndex].ToLower);
-  LData := GetDataJSONValue;
-  if LData <> nil then
-    LAndroid.AddPair('data', LData);
-  LNotification := GetAndroidNotificationJSONValue;
-  if LNotification <> nil then
-    LAndroid.AddPair('notification', LNotification);
-  Result := LAndroid;
-end;
-
-// Reference for aps member: https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification?language=objc
-// Do not put title and body in here - they are set in the notification member
-function TMainView.GetAPNSJSONValue: TJSONValue;
-var
-  LAPNS, LPayload, LAPS: TJSONObject;
-  LHasAPS: Boolean;
-begin
-  Result := nil;
-  LHasAPS := False;
-  LAPNS := TJSONObject.Create;
-  try
-    LPayload := TJSONObject.Create;
-    LAPNS.AddPair('payload', LPayload);
-    LAPS := TJSONObject.Create;
-    LPayload.AddPair('aps', LAPS);
-    if not SoundEdit.Text.Trim.IsEmpty then
-      LAPS.AddPair('sound', SoundEdit.Text);
-    if not BadgeEdit.Text.Trim.IsEmpty then
-      LAPS.AddPair('badge', BadgeEdit.Text);
+      LMessage.Options := LMessage.Options + [TFCMMessageOption.BigText];
+    if not LMessage.ImageURL.IsEmpty and BigPictureCheckBox.IsChecked then
+      LMessage.Options := LMessage.Options + [TFCMMessageOption.BigImage];
     if ContentAvailableCheckBox.IsChecked then
-      LAPS.AddPair('content-available', TJSONBool.Create(True));
-    // Add this LAST
-    if LAPS.Count > 0 then
-      LAPS.AddPair('mutable-content', TJSONBool.Create(True));
-    LHasAPS := LAPS.Count > 0;
-  finally
-    if LHasAPS then
-      Result := LAPNS
+      LMessage.Options := LMessage.Options + [TFCMMessageOption.ContentAvailable];
+    case PriorityComboBox.ItemIndex of
+      0:
+        LMessage.Priority := TFCMMessagePriority.None;
+      1:
+        LMessage.Priority := TFCMMessagePriority.Normal;
+      2:
+        LMessage.Priority := TFCMMessagePriority.High;
+    end;
+    LMessage.SoundName := SoundEdit.Text;
+    LMessage.BadgeCount := StrToIntDef(BadgeEdit.Text, 0);
+    LMessage.ClickAction := ClickActionEdit.Text;
+    if TokenRadioButton.IsChecked then
+      Result := LMessage.GetTokenPayload(TokenEdit.Text)
     else
-      LAPNS.Free;
-  end;
-end;
-
-// https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
-
-function TMainView.GetMessageJSONNonLegacy: string;
-var
-  LJSON, LMessage, LNotification: TJSONObject;
-  LData, LAndroid, LAPNS: TJSONValue;
-begin
-  LJSON := TJSONObject.Create;
-  try
-    LMessage := TJSONObject.Create;
-    LJSON.AddPair('message', LMessage);
-    LMessage.AddPair('token', TokenEdit.Text);
-    LNotification := TJSONObject.Create;
-    LMessage.AddPair('notification', LNotification);
-    LNotification.AddPair('title', TitleEdit.Text);
-    if not BodyMemo.Text.Trim.IsEmpty then
-      LNotification.AddPair('body', BodyMemo.Text);
-    if not ImageURLEdit.Text.Trim.IsEmpty then
-      LNotification.AddPair('image', ImageURLEdit.Text);
-    LAndroid := GetAndroidJSONValue;
-    if LAndroid <> nil then
-      LMessage.AddPair('android', LAndroid);
-    LAPNS := GetAPNSJSONValue;
-    if LAPNS <> nil then
-      LMessage.AddPair('apns', LAPNS);
-    Result := LJSON.ToJSON;
+      Result := LMessage.GetTopicPayload(TokenEdit.Text);
   finally
-    LJSON.Free;
+    LMessage.Free;
   end;
 end;
 
@@ -625,11 +343,6 @@ end;
 procedure TMainView.SendActionExecute(Sender: TObject);
 begin
   ResponseMemo.Text := '';
-  if APIKeyEdit.Items.IndexOf(APIKeyEdit.Text) = -1 then
-  begin
-    APIKeyEdit.Items.Insert(0, APIKeyEdit.Text);
-    FConfig.UpdateAPIKeyMRU(APIKeyEdit.Items.ToStringArray);
-  end;
   FConfig.Token := TokenEdit.Text;
   FConfig.Save;
   FCMSend;
@@ -637,7 +350,7 @@ end;
 
 procedure TMainView.SendActionUpdate(Sender: TObject);
 begin
-  SendAction.Enabled := (UseLegacyAPI and CanSendLegacy) or (not UseLegacyAPI and CanSendNonLegacy);
+  SendAction.Enabled := CanSend;
 end;
 
 procedure TMainView.ConfirmUpdateJSON;
@@ -647,10 +360,7 @@ begin
     begin
       if AResult = mrYes then
       begin
-        if UseLegacyAPI then
-          JSONMemo.Text := TJson.Tidy(GetMessageJSONLegacy)
-        else
-          JSONMemo.Text := TJson.Tidy(GetMessageJSONNonLegacy);
+        JSONMemo.Text := TJsonHelper.Tidy(GetMessageJSON);
         FIsMessageModified := False;
       end;
     end
@@ -661,18 +371,6 @@ procedure TMainView.TabControlChange(Sender: TObject);
 begin
   if FIsMessageModified and (TabControl.ActiveTab = JSONTab) then
     ConfirmUpdateJSON;
-end;
-
-function TMainView.UseLegacyAPI: Boolean;
-begin
-  Result := LegacyHTTPAPIRadioButton.IsChecked;
-end;
-
-procedure TMainView.UseLegacyAPIChanged;
-begin
-  ServiceAccountJSONFileNameEdit.Enabled := HTTPv1APIRadioButton.IsChecked;
-  APIKeyEdit.Enabled := LegacyHTTPAPIRadioButton.IsChecked;
-  MessageTypeRadioLayout.Enabled := LegacyHTTPAPIRadioButton.IsChecked;
 end;
 
 end.
