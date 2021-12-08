@@ -2,11 +2,13 @@
 
 PushIt is a tool designed to make it easier for testing Firebase Cloud Messaging (FCM) to mobile devices
 
+**NOTE: As of Dec 8th, 2021, the legacy HTTP API functionality has been removed from PushIt. If you require the original source code that includes it, I could make it available as part of this repo, however all future changes will not include the legacy API.**
+
 ## Application
 
 ### Main View
 
-The main window allows you to enter your Service Account JSON File (HTTP v1 API) or FCM API key (Legacy API), the device token to send to, and the fields that you want to include in the message:
+The main window allows you to enter your Service Account JSON File (HTTP v1 API), the device token to send to, and the fields that you want to include in the message:
 
 ![Main View](./Screenshots/MainView.png)
 
@@ -16,24 +18,12 @@ To obtain the file:
 
 * Go into [Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts)
 * Select the project you have associated with Firebase Cloud Messaging
-* If you do not have any service accounts listed with a name of `firebase-adminsk` you will need to create one
+* If you do not have any service accounts listed with a name of `firebase-adminsdk` you will need to create one
 * Once the account has been selected or created, go to the `Keys` tab
 * Click Add Key and select Create a new key, then click Create
 * The browser will prompt you to save the JSON file somewhere. **It does this only once, so make sure you keep the file**
 
-You may now use this file in PushIt when using HTTP v1 API
-
-#### Legacy API Key
-
-To obtain the API key:
-
-* Go to [Firebase Console](https://console.firebase.google.com/)
-* Select the project you have associated with Firebase Cloud Messaging
-* Click the settings icon (looks like a cog) in the top left
-* Click Project Settings
-* Select the Cloud Messaging tab
-  
-The API key is listed as `Server key` copy this value and paste it into the API Key edit in PushIt. If you send a message using this key, PushIt will remember this key next time you open it
+You may now use this file in PushIt
 
 #### Modifying the JSON
 
@@ -55,7 +45,7 @@ Select a device and click the Use button to populate the Token field in the main
 
 There are precompiled Win32/Win64 binaries of PushIt in the `Bin` folder of this repo. 
 
-**Please note that if you wish to use HTTP v1 API you will need to put the OpenSSL DLLs for the respective platform from the `Lib` folder either into the same folder as PushIt, or the Windows library path**
+**Please note that if you will need to put the OpenSSL DLLs for the respective platform from the `Lib` folder either into the same folder as PushIt, or the Windows library path**
 
 i.e. for Win32:
 ```
@@ -73,9 +63,9 @@ These files were obtained from the [Grijjy Delphi OpenSsl repo](https://github.c
 
 ## Compiling PushIt
 
-PushIt was written in Embarcadero's Delphi, using version 10.4.2, however it may compile for earlier versions.
+PushIt was written in Embarcadero's Delphi, using version 11.0, however it may compile for earlier versions.
 
-PushIt depends on units from the [Kastri](https://github.com/DelphiWorlds/Kastri) project, specifically DW.Classes.Helpers and DW.Rest.Json.Helpers from the Core folder, so you will need to include a path to these units in order for PushIt to compile.
+PushIt depends on units from the [Kastri](https://github.com/DelphiWorlds/Kastri) project, so you will need to include a path to these units in order for PushIt to compile.
 
 PushIt is an FMX application so it is cross-platform, however the recommended platforms are macOS and Windows.
 
@@ -102,6 +92,12 @@ When PushIt is built, the style for the respective platform will be compiled int
 The screenshots (above) for PushIt use the Calypso style from [Delphi Styles](https://delphistyles.com/)
 
 ## Version History
+
+v3.0.0 (Dec 8th, 2021)
+
+* Removed support for legacy HTTP API
+* Refactored to use the [DW.FCMSender unit from Kastri](https://github.com/DelphiWorlds/Kastri/blob/master/Features/Firebase/DW.FCMSender.pas)
+* Minor fixes
 
 v2.0.0 (April 23rd, 2021)
 
