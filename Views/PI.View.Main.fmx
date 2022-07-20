@@ -458,6 +458,16 @@ object MainView: TMainView
             Text = 'Topic'
             OnClick = MessageTypeRadioButtonClick
           end
+          object DataOnlyCheckBox: TCheckBox
+            Align = Left
+            Margins.Left = 32.000000000000000000
+            Position.X = 233.000000000000000000
+            Size.Width = 196.000000000000000000
+            Size.Height = 24.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+            Text = 'Data Only Notification'
+          end
         end
       end
     end

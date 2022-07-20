@@ -68,6 +68,7 @@ type
     TokenRadioButton: TRadioButton;
     TopicRadioButton: TRadioButton;
     ServiceAccountLayout: TLayout;
+    DataOnlyCheckBox: TCheckBox;
     procedure JSONMemoChangeTracking(Sender: TObject);
     procedure MessageFieldChange(Sender: TObject);
     procedure ClearMessageFieldsButtonClick(Sender: TObject);
@@ -99,6 +100,7 @@ type
     procedure FCMSenderResponseHandler(Sender: TObject; const AResponse: TFCMSenderResponse);
     function GetMessageJSON: string;
     function HasMinRequiredFields: Boolean;
+    function IsJSONValid: Boolean;
     procedure ParseServiceAccount;
     procedure ResponseReceived(const AResponse: string);
   public
@@ -190,13 +192,28 @@ end;
 
 function TMainView.CanSend: Boolean;
 begin
-  // Needs token plus OAuth2 stuff...
-  Result := not TokenEdit.Text.Trim.IsEmpty and FFCMSender.ServiceAccount.IsValid and HasMinRequiredFields;
+  Result := not TokenEdit.Text.Trim.IsEmpty and FFCMSender.ServiceAccount.IsValid and (HasMinRequiredFields or IsJSONValid);
 end;
 
 function TMainView.HasMinRequiredFields: Boolean;
 begin
   Result := not TitleEdit.Text.Trim.IsEmpty and not BodyMemo.Text.Trim.IsEmpty;
+end;
+
+function TMainView.IsJSONValid: Boolean;
+var
+  LJSON: TJSONValue;
+begin
+  Result := False;
+  if not JSONMemo.Text.IsEmpty then
+  begin
+    LJSON := TJSONObject.ParseJSONValue(JSONMemo.Text);
+    if LJSON <> nil then
+    begin
+      Result := True;
+      LJSON.Free;
+    end;
+  end;
 end;
 
 procedure TMainView.ClearAllFieldsButtonClick(Sender: TObject);
@@ -301,6 +318,7 @@ var
 begin
   LMessage := TFCMMessage.Create;
   try
+    LMessage.IsDataOnly := DataOnlyCheckBox.IsChecked;
     LMessage.Title := TitleEdit.Text;
     // LMessage.Subtitle := SubtitleEdit.Text;
     LMessage.Body := BodyMemo.Text;
