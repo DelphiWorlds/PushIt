@@ -25,6 +25,12 @@ To obtain the file:
 
 You may now use this file in PushIt
 
+#### "Data Only" messages
+
+v3.0.1 introduced "Data Only" messages, which are handled by improved FCM support, currently being tested in FCM Rebooted in the Playground repo.
+
+Check the "Data Only" checkbox to send messages with this kind of payload.
+
 #### Modifying the JSON
 
 PushIt also allows you to modify (or create) the JSON that is sent:
@@ -92,6 +98,10 @@ When PushIt is built, the style for the respective platform will be compiled int
 The screenshots (above) for PushIt use the Calypso style from [Delphi Styles](https://delphistyles.com/)
 
 ## Version History
+
+v3.0.1 (Jul 20th, 2022)
+
+* Added support for "Data Only" messages
 
 v3.0.0 (Dec 8th, 2021)
 
