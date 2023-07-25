@@ -99,6 +99,10 @@ The screenshots (above) for PushIt use the Calypso style from [Delphi Styles](ht
 
 ## Version History
 
+v3.1.0 (Jul 25th, 2023)
+
+* Added support for custom data
+
 v3.0.1 (Jul 20th, 2022)
 
 * Added support for "Data Only" messages
