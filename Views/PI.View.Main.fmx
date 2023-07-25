@@ -2,8 +2,8 @@ object MainView: TMainView
   Left = 0
   Top = 0
   Caption = 'PushIt'
-  ClientHeight = 925
-  ClientWidth = 1237
+  ClientHeight = 926
+  ClientWidth = 1238
   Position = ScreenCenter
   StyleBook = Resources.StyleBook
   FormFactor.Width = 320
@@ -21,12 +21,12 @@ object MainView: TMainView
     Margins.Right = 4.000000000000000000
     Margins.Bottom = 4.000000000000000000
     Position.X = 4.000000000000000000
-    Position.Y = 720.000000000000000000
-    Size.Width = 1229.000000000000000000
+    Position.Y = 721.000000000000000000
+    Size.Width = 1230.000000000000000000
     Size.Height = 157.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    Viewport.Width = 1225.000000000000000000
+    Viewport.Width = 1226.000000000000000000
     Viewport.Height = 153.000000000000000000
   end
   object ResponseLabel: TLabel
@@ -34,8 +34,8 @@ object MainView: TMainView
     Margins.Left = 4.000000000000000000
     Margins.Right = 4.000000000000000000
     Position.X = 4.000000000000000000
-    Position.Y = 699.000000000000000000
-    Size.Width = 1229.000000000000000000
+    Position.Y = 700.000000000000000000
+    Size.Width = 1230.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Response:'
@@ -48,18 +48,18 @@ object MainView: TMainView
     Padding.Right = 4.000000000000000000
     Padding.Bottom = 4.000000000000000000
     Margins.Top = 4.000000000000000000
-    Size.Width = 1237.000000000000000000
-    Size.Height = 646.000000000000000000
+    Size.Width = 1238.000000000000000000
+    Size.Height = 647.000000000000000000
     Size.PlatformDefault = False
     TabIndex = 0
     TabOrder = 2
     TabPosition = PlatformDefault
     OnChange = TabControlChange
     Sizes = (
-      1229s
-      612s
-      1229s
-      612s)
+      1230s
+      613s
+      1230s
+      613s)
     object MessageTab: TTabItem
       CustomIcon = <
         item
@@ -79,15 +79,15 @@ object MainView: TMainView
         Margins.Top = 4.000000000000000000
         Margins.Right = 4.000000000000000000
         Margins.Bottom = 4.000000000000000000
-        Size.Width = 1221.000000000000000000
-        Size.Height = 604.000000000000000000
+        Size.Width = 1222.000000000000000000
+        Size.Height = 605.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         object ChannelLabel: TLabel
           Align = Top
           Margins.Top = 4.000000000000000000
           Position.Y = 57.000000000000000000
-          Size.Width = 1221.000000000000000000
+          Size.Width = 1222.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           Text = 'Android Channel ID:'
@@ -99,7 +99,7 @@ object MainView: TMainView
           TabOrder = 2
           Position.Y = 78.000000000000000000
           Margins.Top = 4.000000000000000000
-          Size.Width = 1221.000000000000000000
+          Size.Width = 1222.000000000000000000
           Size.Height = 25.000000000000000000
           Size.PlatformDefault = False
           OnChangeTracking = MessageFieldChange
@@ -118,7 +118,7 @@ object MainView: TMainView
           TabOrder = 1
           Position.Y = 28.000000000000000000
           Margins.Top = 4.000000000000000000
-          Size.Width = 1221.000000000000000000
+          Size.Width = 1222.000000000000000000
           Size.Height = 25.000000000000000000
           Size.PlatformDefault = False
           object ClearTokenEditButton: TClearEditButton
@@ -136,14 +136,14 @@ object MainView: TMainView
           Padding.Top = 4.000000000000000000
           Padding.Right = 4.000000000000000000
           Padding.Bottom = 4.000000000000000000
-          Position.Y = 560.000000000000000000
-          Size.Width = 1221.000000000000000000
+          Position.Y = 561.000000000000000000
+          Size.Width = 1222.000000000000000000
           Size.Height = 44.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 5
           object ClearMessageFieldsButton: TButton
             Align = Right
-            Position.X = 1073.000000000000000000
+            Position.X = 1074.000000000000000000
             Position.Y = 4.000000000000000000
             Size.Width = 144.000000000000000000
             Size.Height = 36.000000000000000000
@@ -155,7 +155,7 @@ object MainView: TMainView
           object ClearAllFieldsButton: TButton
             Align = Right
             Margins.Right = 8.000000000000000000
-            Position.X = 921.000000000000000000
+            Position.X = 922.000000000000000000
             Position.Y = 4.000000000000000000
             Size.Width = 144.000000000000000000
             Size.Height = 36.000000000000000000
@@ -182,7 +182,7 @@ object MainView: TMainView
           LineType = Bottom
           Margins.Bottom = 8.000000000000000000
           Position.Y = 103.000000000000000000
-          Size.Width = 1221.000000000000000000
+          Size.Width = 1222.000000000000000000
           Size.Height = 13.000000000000000000
           Size.PlatformDefault = False
           Stroke.Color = claBlueviolet
@@ -190,29 +190,29 @@ object MainView: TMainView
         end
         object MessageFieldsLayout: TLayout
           Align = Client
-          Size.Width = 1221.000000000000000000
-          Size.Height = 436.000000000000000000
+          Size.Width = 1222.000000000000000000
+          Size.Height = 437.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 3
           object MessageTextLayout: TLayout
             Align = Client
-            Size.Width = 805.000000000000000000
-            Size.Height = 436.000000000000000000
+            Size.Width = 806.000000000000000000
+            Size.Height = 437.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
             object BodyLabel: TLabel
               Align = Top
               Margins.Top = 4.000000000000000000
               Position.Y = 102.000000000000000000
-              Size.Width = 805.000000000000000000
+              Size.Width = 806.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Body:'
-              TabOrder = 4
+              TabOrder = 6
               TabStop = False
               object BigTextCheckBox: TCheckBox
                 Align = Right
-                Position.X = 685.000000000000000000
+                Position.X = 686.000000000000000000
                 Size.Width = 120.000000000000000000
                 Size.Height = 17.000000000000000000
                 Size.PlatformDefault = False
@@ -227,12 +227,12 @@ object MainView: TMainView
               OnChangeTracking = MessageFieldChange
               Align = Client
               Margins.Top = 4.000000000000000000
-              Size.Width = 805.000000000000000000
-              Size.Height = 264.000000000000000000
+              Size.Width = 806.000000000000000000
+              Size.Height = 90.000000000000000000
               Size.PlatformDefault = False
               TabOrder = 2
-              Viewport.Width = 801.000000000000000000
-              Viewport.Height = 260.000000000000000000
+              Viewport.Width = 802.000000000000000000
+              Viewport.Height = 86.000000000000000000
             end
             object SubtitleEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -240,7 +240,7 @@ object MainView: TMainView
               TabOrder = 1
               Position.Y = 74.000000000000000000
               Margins.Top = 4.000000000000000000
-              Size.Width = 805.000000000000000000
+              Size.Width = 806.000000000000000000
               Size.Height = 24.000000000000000000
               Size.PlatformDefault = False
               OnChangeTracking = MessageFieldChange
@@ -249,11 +249,11 @@ object MainView: TMainView
               Align = Top
               Margins.Top = 4.000000000000000000
               Position.Y = 53.000000000000000000
-              Size.Width = 805.000000000000000000
+              Size.Width = 806.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Subtitle:'
-              TabOrder = 6
+              TabOrder = 8
             end
             object TitleEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -261,7 +261,7 @@ object MainView: TMainView
               TabOrder = 0
               Position.Y = 25.000000000000000000
               Margins.Top = 4.000000000000000000
-              Size.Width = 805.000000000000000000
+              Size.Width = 806.000000000000000000
               Size.Height = 24.000000000000000000
               Size.PlatformDefault = False
               OnChangeTracking = MessageFieldChange
@@ -270,25 +270,25 @@ object MainView: TMainView
               Align = Top
               Margins.Top = 4.000000000000000000
               Position.Y = 4.000000000000000000
-              Size.Width = 805.000000000000000000
+              Size.Width = 806.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Title:'
-              TabOrder = 7
+              TabOrder = 9
             end
             object ImageURLLabel: TLabel
               Align = Bottom
               Margins.Top = 4.000000000000000000
-              Position.Y = 391.000000000000000000
-              Size.Width = 805.000000000000000000
+              Position.Y = 392.000000000000000000
+              Size.Width = 806.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Image URL:'
-              TabOrder = 5
+              TabOrder = 7
               TabStop = False
               object BigPictureCheckBox: TCheckBox
                 Align = Right
-                Position.X = 685.000000000000000000
+                Position.X = 686.000000000000000000
                 Size.Width = 120.000000000000000000
                 Size.Height = 17.000000000000000000
                 Size.PlatformDefault = False
@@ -300,13 +300,40 @@ object MainView: TMainView
             object ImageURLEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Bottom
-              TabOrder = 3
-              Position.Y = 412.000000000000000000
+              TabOrder = 4
+              Position.Y = 413.000000000000000000
               Margins.Top = 4.000000000000000000
-              Size.Width = 805.000000000000000000
+              Size.Width = 806.000000000000000000
               Size.Height = 24.000000000000000000
               Size.PlatformDefault = False
               OnChangeTracking = MessageFieldChange
+            end
+            object DataLabel: TLabel
+              Align = Bottom
+              Margins.Top = 4.000000000000000000
+              Position.Y = 217.000000000000000000
+              Size.Width = 806.000000000000000000
+              Size.Height = 17.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Data (must be valid JSON with members of string type ONLY) :'
+              TabOrder = 5
+              TabStop = False
+            end
+            object DataMemo: TMemo
+              Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+              DataDetectorTypes = []
+              StyledSettings = [Size, Style, FontColor]
+              TextSettings.Font.Family = 'Consolas'
+              OnChangeTracking = MessageFieldChange
+              Align = Bottom
+              Margins.Top = 4.000000000000000000
+              Position.Y = 238.000000000000000000
+              Size.Width = 806.000000000000000000
+              Size.Height = 150.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 3
+              Viewport.Width = 802.000000000000000000
+              Viewport.Height = 146.000000000000000000
             end
           end
           object MessagePropsLayout: TLayout
@@ -314,9 +341,9 @@ object MainView: TMainView
             Padding.Left = 8.000000000000000000
             Padding.Right = 4.000000000000000000
             Padding.Bottom = 4.000000000000000000
-            Position.X = 805.000000000000000000
+            Position.X = 806.000000000000000000
             Size.Width = 416.000000000000000000
-            Size.Height = 436.000000000000000000
+            Size.Height = 437.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
             object BadgeEdit: TEdit
@@ -432,7 +459,7 @@ object MainView: TMainView
         end
         object TokenTopicLayout: TLayout
           Align = Top
-          Size.Width = 1221.000000000000000000
+          Size.Width = 1222.000000000000000000
           Size.Height = 24.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
@@ -495,12 +522,12 @@ object MainView: TMainView
         Margins.Top = 4.000000000000000000
         Margins.Right = 4.000000000000000000
         Margins.Bottom = 4.000000000000000000
-        Size.Width = 1221.000000000000000000
-        Size.Height = 604.000000000000000000
+        Size.Width = 1222.000000000000000000
+        Size.Height = 605.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
-        Viewport.Width = 1217.000000000000000000
-        Viewport.Height = 600.000000000000000000
+        Viewport.Width = 1218.000000000000000000
+        Viewport.Height = 601.000000000000000000
       end
     end
   end
@@ -510,8 +537,8 @@ object MainView: TMainView
     Padding.Top = 4.000000000000000000
     Padding.Right = 4.000000000000000000
     Padding.Bottom = 4.000000000000000000
-    Position.Y = 881.000000000000000000
-    Size.Width = 1237.000000000000000000
+    Position.Y = 882.000000000000000000
+    Size.Width = 1238.000000000000000000
     Size.Height = 44.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 3
@@ -520,7 +547,7 @@ object MainView: TMainView
       Align = Right
       Enabled = True
       ImageIndex = -1
-      Position.X = 1120.000000000000000000
+      Position.X = 1121.000000000000000000
       Position.Y = 4.000000000000000000
       Size.Width = 113.000000000000000000
       Size.Height = 36.000000000000000000
@@ -537,6 +564,17 @@ object MainView: TMainView
       TabOrder = 1
       Text = 'Show log messages'
     end
+    object ErrorLabel: TLabel
+      Align = Client
+      StyledSettings = [Family, Size]
+      Margins.Left = 24.000000000000000000
+      Size.Width = 948.000000000000000000
+      Size.Height = 36.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      TextSettings.FontColor = claRed
+      TabOrder = 2
+    end
   end
   object ServiceAccountOpenDialog: TOpenDialog
     Filter = 'Service Account JSON files (*.json)|*.json'
@@ -550,13 +588,13 @@ object MainView: TMainView
     Padding.Top = 4.000000000000000000
     Padding.Right = 4.000000000000000000
     Padding.Bottom = 4.000000000000000000
-    Size.Width = 1237.000000000000000000
+    Size.Width = 1238.000000000000000000
     Size.Height = 49.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 9
     object ServiceAccountJSONLabel: TLabel
       Align = Client
-      Size.Width = 1229.000000000000000000
+      Size.Width = 1230.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       Text = 'Service Account JSON File:'
@@ -568,7 +606,7 @@ object MainView: TMainView
       TabOrder = 1
       Position.X = 4.000000000000000000
       Position.Y = 20.000000000000000000
-      Size.Width = 1229.000000000000000000
+      Size.Width = 1230.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
       OnChangeTracking = ServiceAccountJSONFileNameEditChangeTracking

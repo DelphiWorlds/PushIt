@@ -69,6 +69,9 @@ type
     TopicRadioButton: TRadioButton;
     ServiceAccountLayout: TLayout;
     DataOnlyCheckBox: TCheckBox;
+    DataLabel: TLabel;
+    DataMemo: TMemo;
+    ErrorLabel: TLabel;
     procedure JSONMemoChangeTracking(Sender: TObject);
     procedure MessageFieldChange(Sender: TObject);
     procedure ClearMessageFieldsButtonClick(Sender: TObject);
@@ -100,6 +103,7 @@ type
     procedure FCMSenderResponseHandler(Sender: TObject; const AResponse: TFCMSenderResponse);
     function GetMessageJSON: string;
     function HasMinRequiredFields: Boolean;
+    function IsDataJSONValid: Boolean;
     function IsJSONValid: Boolean;
     procedure ParseServiceAccount;
     procedure ResponseReceived(const AResponse: string);
@@ -192,12 +196,64 @@ end;
 
 function TMainView.CanSend: Boolean;
 begin
-  Result := not TokenEdit.Text.Trim.IsEmpty and FFCMSender.ServiceAccount.IsValid and (HasMinRequiredFields or IsJSONValid);
+  Result := not TokenEdit.Text.Trim.IsEmpty and FFCMSender.ServiceAccount.IsValid and IsDataJSONValid and (IsJSONValid or HasMinRequiredFields);
+  if not Result then
+  begin
+    if TokenEdit.Text.Trim.IsEmpty then
+    begin
+      if TopicRadioButton.IsChecked then
+        ErrorLabel.Text := 'Needs a topic'
+      else if TokenRadioButton.IsChecked then
+        ErrorLabel.Text := 'Needs a token';
+    end;
+    if not FFCMSender.ServiceAccount.IsValid then
+      ErrorLabel.Text := 'Service account is invalid';
+  end
+  else
+    ErrorLabel.Text := '';
 end;
 
 function TMainView.HasMinRequiredFields: Boolean;
 begin
   Result := not TitleEdit.Text.Trim.IsEmpty and not BodyMemo.Text.Trim.IsEmpty;
+  if not Result then
+    ErrorLabel.Text := 'Needs at least a Title and Body';
+end;
+
+function TMainView.IsDataJSONValid: Boolean;
+var
+  LJSON: TJSONValue;
+  LPair: TJSONPair;
+  I: Integer;
+  LJSONObject: TJSONObject;
+begin
+  // If the value is blank, it's not used anyway
+  Result := True;
+  if not DataMemo.Text.IsEmpty then
+  begin
+    // Assume it's not valid
+    Result := False;
+    LJSON := TJSONObject.ParseJSONValue(DataMemo.Text);
+    if (LJSON <> nil) and (LJSON is TJSONObject) then
+    try
+      // It's a JSON object - so far, so good
+      Result := True;
+      LJSONObject := TJSONObject(LJSON);
+      for I := 0 to LJSONObject.Count - 1 do
+      begin
+        if not (LJSONObject.Pairs[I].JsonValue is TJSONString) then
+        begin
+          // Anything but string values are not allowed
+          Result := False;
+          Break;
+        end;
+      end;
+    finally
+      LJSON.Free;
+    end;
+  end;
+  if not Result then
+    ErrorLabel.Text := 'Data JSON is invalid';
 end;
 
 function TMainView.IsJSONValid: Boolean;
@@ -214,6 +270,8 @@ begin
       LJSON.Free;
     end;
   end;
+  if not Result then
+    ErrorLabel.Text := 'Payload JSON is invalid';
 end;
 
 procedure TMainView.ClearAllFieldsButtonClick(Sender: TObject);
@@ -340,6 +398,7 @@ begin
     LMessage.SoundName := SoundEdit.Text;
     LMessage.BadgeCount := StrToIntDef(BadgeEdit.Text, 0);
     LMessage.ClickAction := ClickActionEdit.Text;
+    LMessage.Data := DataMemo.Text;
     if TokenRadioButton.IsChecked then
       Result := LMessage.GetTokenPayload(TokenEdit.Text)
     else
