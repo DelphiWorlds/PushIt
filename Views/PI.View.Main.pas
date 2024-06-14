@@ -378,6 +378,7 @@ begin
   try
     LMessage.IsDataOnly := DataOnlyCheckBox.IsChecked;
     LMessage.Title := TitleEdit.Text;
+    LMessage.ChannelID := ChannelIDEdit.Text;
     // LMessage.Subtitle := SubtitleEdit.Text;
     LMessage.Body := BodyMemo.Text;
     LMessage.ImageURL := ImageURLEdit.Text;
