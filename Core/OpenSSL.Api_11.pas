@@ -9953,7 +9953,11 @@ type
     comment: PUTF8Char;
   end;
 
-  PECDSA_SIG = Pointer;
+  ECDSA_SIG = record
+    r: PBIGNUM;
+    s: PBIGNUM;
+  end;
+  PECDSA_SIG = ^ECDSA_SIG;
   PPECDSA_SIG = ^PECDSA_SIG;
 
   SHAstate_st = record
