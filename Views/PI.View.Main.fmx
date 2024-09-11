@@ -64,6 +64,7 @@ object MainView: TMainView
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = True
       Size.Width = 67.000000000000000000
       Size.Height = 26.000000000000000000
@@ -106,6 +107,7 @@ object MainView: TMainView
           object ClearChannelIDEditButton: TClearEditButton
             CanFocus = False
             Cursor = crArrow
+            TextSettings.Trimming = None
             Size.Width = 28.000000000000000000
             Size.Height = 21.000000000000000000
             Size.PlatformDefault = False
@@ -124,6 +126,7 @@ object MainView: TMainView
           object ClearTokenEditButton: TClearEditButton
             CanFocus = False
             Cursor = crArrow
+            TextSettings.Trimming = None
             Size.Width = 28.000000000000000000
             Size.Height = 21.000000000000000000
             Size.PlatformDefault = False
@@ -150,6 +153,7 @@ object MainView: TMainView
             Size.PlatformDefault = False
             TabOrder = 1
             Text = 'Clear Message Fields'
+            TextSettings.Trimming = None
             OnClick = ClearMessageFieldsButtonClick
           end
           object ClearAllFieldsButton: TButton
@@ -162,6 +166,7 @@ object MainView: TMainView
             Size.PlatformDefault = False
             TabOrder = 0
             Text = 'Clear All Fields'
+            TextSettings.Trimming = None
             OnClick = ClearAllFieldsButtonClick
           end
           object DevicesButton: TButton
@@ -174,6 +179,7 @@ object MainView: TMainView
             Size.PlatformDefault = False
             TabOrder = 2
             Text = 'Devices..'
+            TextSettings.Trimming = None
             OnClick = DevicesButtonClick
           end
         end
@@ -368,7 +374,7 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Badge:'
-              TabOrder = 8
+              TabOrder = 9
             end
             object SoundLabel: TLabel
               Align = Top
@@ -379,7 +385,7 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Sound:'
-              TabOrder = 7
+              TabOrder = 8
             end
             object SoundEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -401,8 +407,8 @@ object MainView: TMainView
               Size.Width = 404.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
-              Text = 'Click Action:'
-              TabOrder = 5
+              Text = 'Click Action: (Category on iOS)'
+              TabOrder = 6
             end
             object ClickActionEdit: TEdit
               Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -425,7 +431,7 @@ object MainView: TMainView
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Priority:'
-              TabOrder = 6
+              TabOrder = 7
             end
             object PriorityComboBox: TComboBox
               Align = Top
@@ -454,6 +460,17 @@ object MainView: TMainView
               TabOrder = 1
               Text = 'Content Available'
               OnClick = ContentAvailableCheckBoxClick
+            end
+            object IsSilentCheckBox: TCheckBox
+              Align = Top
+              Margins.Top = 22.000000000000000000
+              Position.X = 8.000000000000000000
+              Position.Y = 270.000000000000000000
+              Size.Width = 404.000000000000000000
+              Size.Height = 19.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 5
+              Text = 'Silent (Kastri FCM)'
             end
           end
         end
@@ -502,6 +519,7 @@ object MainView: TMainView
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = False
       Size.Width = 49.000000000000000000
       Size.Height = 26.000000000000000000
@@ -545,7 +563,6 @@ object MainView: TMainView
     object SendButton: TButton
       Action = SendAction
       Align = Right
-      Enabled = True
       ImageIndex = -1
       Position.X = 1121.000000000000000000
       Position.Y = 4.000000000000000000
@@ -553,6 +570,7 @@ object MainView: TMainView
       Size.Height = 36.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
+      TextSettings.Trimming = None
     end
     object LogCheckBox: TCheckBox
       Align = Left
@@ -614,6 +632,7 @@ object MainView: TMainView
         Action = SelectServiceAccountJSONFileAction
         CanFocus = False
         Cursor = crArrow
+        TextSettings.Trimming = None
         Size.Width = 28.000000000000000000
         Size.Height = 21.000000000000000000
         Size.PlatformDefault = False

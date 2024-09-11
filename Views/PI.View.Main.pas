@@ -72,6 +72,7 @@ type
     DataLabel: TLabel;
     DataMemo: TMemo;
     ErrorLabel: TLabel;
+    IsSilentCheckBox: TCheckBox;
     procedure JSONMemoChangeTracking(Sender: TObject);
     procedure MessageFieldChange(Sender: TObject);
     procedure ClearMessageFieldsButtonClick(Sender: TObject);
@@ -243,7 +244,7 @@ begin
       begin
         if not (LJSONObject.Pairs[I].JsonValue is TJSONString) then
         begin
-          // Anything but string values are not allowed
+          // Only *string* values are allowed
           Result := False;
           Break;
         end;
@@ -292,6 +293,9 @@ begin
   SoundEdit.Text := '';
   BadgeEdit.Text := '';
   ClickActionEdit.Text := '';
+  IsSilentCheckBox.IsChecked := False;
+  ImageURLEdit.Text := '';
+  DataMemo.Text := '';
 end;
 
 procedure TMainView.ServiceAccountJSONFileNameEditChangeTracking(Sender: TObject);
@@ -377,6 +381,7 @@ begin
   LMessage := TFCMMessage.Create;
   try
     LMessage.IsDataOnly := DataOnlyCheckBox.IsChecked;
+    LMessage.IsSilent := IsSilentCheckBox.IsChecked;
     LMessage.Title := TitleEdit.Text;
     LMessage.ChannelID := ChannelIDEdit.Text;
     // LMessage.Subtitle := SubtitleEdit.Text;
