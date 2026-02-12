@@ -122,7 +122,7 @@ implementation
 
 uses
   // RTL
-  System.Character, System.Net.HttpClient, System.Net.URLClient, System.NetConsts, System.IOUtils,
+  System.Character, System.Net.HttpClient, System.Net.URLClient, System.NetConsts, System.IOUtils, System.Generics.Collections,
   REST.Types,
   // FMX
   FMX.DialogService,
@@ -224,7 +224,6 @@ end;
 function TMainView.IsDataJSONValid: Boolean;
 var
   LJSON: TJSONValue;
-  LPair: TJSONPair;
   I: Integer;
   LJSONObject: TJSONObject;
 begin
