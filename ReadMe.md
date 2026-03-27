@@ -55,17 +55,24 @@ There are precompiled Win32/Win64 binaries of PushIt in the `Bin` folder of this
 
 i.e. for Win32:
 ```
-libcrypto-1_1.dll
-libssl-1_1.dll
+libcrypto-3.dll
+libssl-3.dll
 ```
 
 or for Win64:
 ```
-libcrypto-1_1-x64.dll
-libssl-1_1-x64.dll
+libcrypto-3-x64.dll
+libssl-3-x64.dll
 ```
 
-These files were obtained from the [Grijjy Delphi OpenSsl repo](https://github.com/grijjy/DelphiOpenSsl/tree/master/Bin)
+For macOS, PushIt requires:
+```
+libssl-osx64.a
+libcrypto-osx64.a
+```
+To be in the Search path in the Project Options.
+
+These files are available at the [TaurusTLS project](https://github.com/TaurusTLS-Developers/OpenSSL-Distribution/releases).
 
 ## Compiling PushIt
 
@@ -74,15 +81,6 @@ PushIt was written in Embarcadero's Delphi, using version 11.0, however it may c
 PushIt depends on units from the [Kastri](https://github.com/DelphiWorlds/Kastri) project, so you will need to include a path to these units in order for PushIt to compile.
 
 PushIt is an FMX application so it is cross-platform, however the recommended platforms are macOS and Windows.
-
-On macOS, PushIt uses the files:
-```
-libssl-osx64.a
-libcrypto-osx64.a
-```
-in the `Lib` folder for OpenSSL support. These files were obtained from the [Grijjy Delphi OpenSsl repo](https://github.com/grijjy/DelphiOpenSsl)
-
-For Windows, please see the Precompiled Versions section regarding OpenSSL
 
 In order to have PushIt use styles, please copy your desired .style files into the Styles folder as:
 
